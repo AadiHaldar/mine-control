@@ -1,7 +1,7 @@
 import sys
 import os
 
-# Add project root to Python path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+# Add the server directory to Python path
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from server.main import app
+from main import app

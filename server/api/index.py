@@ -1,7 +1,11 @@
-import sys
+import importlib.util
 import os
 
-# Add the server directory to Python path
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+# Absolute path to main.py
+main_path = os.path.join(os.path.dirname(__file__), "..", "main.py")
 
-from main import app
+spec = importlib.util.spec_from_file_location("main", main_path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+
+app = module.app

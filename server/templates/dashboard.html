@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mine AI Neural Control</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+<meta name="theme-color" content="#00ffff">
+</head>
+<body>
+
+<h1>⛏ MINE CONTROL ROOM</h1>
+
+<div class="stats">
+    <div class="stat-box">
+        📦 Packets: <span id="totalPackets">{{ total }}</span>
+    </div>
+    <div class="stat-box danger-stat">
+        🚨 Emergencies: <span id="emergencyCount">{{ emergencies }}</span>
+    </div>
+    <div class="stat-box">
+        ⚠ Avg Risk: <span id="avgRisk">{{ avg_risk }}</span>
+    </div>
+</div>
+
+{% if emergencies > 0 %}
+<div class="alert-banner">
+    ⚠ CRITICAL ALERT ACTIVE ⚠
+</div>
+{% endif %}
+
+<h2 class="section-title">📊 LIVE TELEMETRY</h2>
+
+<div class="charts">
+    <canvas id="methaneChart"></canvas>
+    <canvas id="riskChart"></canvas>
+</div>
+
+<h2 class="section-title">🧠 RISK CORE</h2>
+<h2 class="section-title">🗺 Mine Intelligence Grid</h2>
+
+<div class="mine-grid" id="mineGrid">
+    <!-- 9 nodes dynamically filled by JS -->
+</div>
+<h2 class="section-title">💻 AI TERMINAL</h2>
+
+<div class="terminal" id="aiTerminal"></div>
+
+<div class="gauge-container">
+    <canvas id="riskGauge"></canvas>
+</div>
+
+<h2 class="section-title">📡 NODE STREAM</h2>
+
+<div class="grid">
+    {% for packet in packets %}
+    <div class="card {% if packet.emergency %}danger{% endif %}">
+        <h3>{{ packet.node_id }}</h3>
+        <p>Methane: {{ packet.methane }}</p>
+        <p>Temp: {{ packet.temperature }}</p>
+        <p>Vibration: {{ packet.vibration }}</p>
+        <p>Status: {{ packet.ai_prediction }}</p>
+        <p><strong>Risk:</strong> {{ packet.risk_score }}</p>
+        <p class="timestamp">{{ packet.timestamp }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/script.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/static/service-worker.js")
+    .then(() => console.log("Service Worker Registered"));
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: black;
+    color: #00ffff;
+    overflow-x: hidden;
+}
+
+/* Animated Grid Background */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#00ffff22 1px, transparent 1px),
+                linear-gradient(90deg, #00ffff22 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: moveGrid 10s linear infinite;
+    z-index: -1;
+}
+
+@keyframes moveGrid {
+    from { background-position: 0 0; }
+    to { background-position: 40px 40px; }
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 34px;
+    text-shadow: 0 0 15px #00ffff;
+}
+
+.section-title {
+    text-align: center;
+    margin-top: 60px;
+    font-size: 22px;
+    text-shadow: 0 0 10px #ff00ff;
+}
+
+/* Stats */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.stat-box {
+    background: #0a0a0a;
+    border: 1px solid #00ffff;
+    padding: 18px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #00ffff55;
+}
+
+.danger-stat {
+    border: 1px solid #ff0066;
+    box-shadow: 0 0 20px #ff006655;
+}
+
+/* Alert Banner */
+.alert-banner {
+    background: #ff0066;
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+    box-shadow: 0 0 30px #ff0066;
+    animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+    50% { opacity: 0.7; }
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    padding: 50px;
+}
+
+.card {
+    background: #0a0a0a;
+    border: 1px solid #00ffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00ffff33;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0 25px #00ffff;
+    transform: translateY(-8px);
+}
+
+.danger {
+    border: 1px solid #ff0066;
+    box-shadow: 0 0 25px #ff0066;
+}
+
+.timestamp {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.charts {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+canvas {
+    width: 500px !important;
+    height: 350px !important;
+}
+
+canvas {
+    background: #0a0a0a;
+    border: 1px solid #00ffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 20px #00ffff44;
+}
+
+#gaugeContainer, #riskGauge {
+    width: 500px !important;
+    height: 250px !important;
+}
+
+.charts {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.terminal {
+    width: 80%;
+    margin: 40px auto;
+    background: black;
+    border: 1px solid #00ff88;
+    padding: 20px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 14px;
+    box-shadow: 0 0 20px #00ff88;
+    color: #00ff88;
+}
+
+.terminal-line {
+    margin-bottom: 5px;
+}
+
+.flash-alert {
+    animation: flashRed 0.5s ease;
+}
+
+@keyframes flashRed {
+    0% { background-color: #330000; }
+    100% { background-color: transparent; }
+}
+.mine-grid {
+    width: 600px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.mine-node {
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00ffff55;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.mine-node.safe {
+    background: #003322;
+    border: 1px solid #00ff88;
+}
+
+.mine-node.caution {
+    background: #332200;
+    border: 1px solid #ffaa00;
+}
+
+.mine-node.danger {
+    background: #330000;
+    border: 1px solid #ff0066;
+}
+
+.mine-node.critical {
+    background: #550000;
+    border: 2px solid #ff0000;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.05); }
+}

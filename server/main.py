@@ -16,7 +16,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="IoT Mine Safety Control Server")
 
 # Mount static folder
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="server/static"), name="static")
 
 # Setup templates
 templates = Jinja2Templates(directory="server/templates")

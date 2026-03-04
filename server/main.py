@@ -19,7 +19,7 @@ app = FastAPI(title="IoT Mine Safety Control Server")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Setup templates
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="server/templates")
 
 # -----------------------------
 # DATA MODEL (Incoming Packet)

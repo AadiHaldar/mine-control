@@ -1,3 +1,4 @@
+```python
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -9,22 +10,25 @@ from models import Base, MinePacket
 import requests
 import datetime
 
-# Create DB tables
+# -----------------------------
+# CREATE DATABASE TABLES
+# -----------------------------
 Base.metadata.create_all(bind=engine)
 
-# Initialize FastAPI app
+# -----------------------------
+# INITIALIZE FASTAPI
+# -----------------------------
 app = FastAPI(title="IoT Mine Safety Control Server")
 
-# Mount static folder
+# Static files
 app.mount("/static", StaticFiles(directory="server/static"), name="static")
 
-# Setup templates
+# Templates
 templates = Jinja2Templates(directory="server/templates")
 
 # -----------------------------
 # DATA MODEL (Incoming Packet)
 # -----------------------------
-
 class Packet(BaseModel):
     node_id: str
     methane: float
@@ -33,18 +37,17 @@ class Packet(BaseModel):
     ai_prediction: str
     emergency: bool
 
+
 # -----------------------------
 # CLOUD CONFIG
 # -----------------------------
-
 CLOUD_URL = "https://example.com/store"
 
-# -----------------------------
-# RISK AI ENGINE (Explainable)
-# -----------------------------
 
+# -----------------------------
+# RISK AI ENGINE
+# -----------------------------
 def calculate_risk(packet: Packet):
-    # Weighted risk scoring
     risk_score = (
         packet.methane * 0.5 +
         packet.temperature * 0.3 +
@@ -67,19 +70,18 @@ def calculate_risk(packet: Packet):
 
     return risk_score, ", ".join(explanation)
 
+
 # -----------------------------
 # RECEIVE PACKET ENDPOINT
 # -----------------------------
-
 @app.post("/mine_packet")
 def receive_packet(packet: Packet):
+
     db: Session = SessionLocal()
 
     try:
-        # Calculate AI risk
         risk_score, explanation = calculate_risk(packet)
 
-        # Auto-emergency decision
         auto_emergency = risk_score > 250
 
         db_packet = MinePacket(
@@ -96,14 +98,15 @@ def receive_packet(packet: Packet):
         db.add(db_packet)
         db.commit()
 
-        # Attempt cloud sync
+        # Try sending to cloud
         try:
-            requests.post(CLOUD_URL, json={
-                **packet.dict(),
-                "risk_score": risk_score
-            }, timeout=3)
-        except:
-            print("Cloud unreachable. Stored locally only.")
+            requests.post(
+                CLOUD_URL,
+                json={**packet.dict(), "risk_score": risk_score},
+                timeout=3
+            )
+        except Exception:
+            print("Cloud unreachable. Stored locally.")
 
         return {
             "status": "Packet stored successfully",
@@ -114,13 +117,15 @@ def receive_packet(packet: Packet):
     finally:
         db.close()
 
+
 # -----------------------------
 # DASHBOARD UI
 # -----------------------------
-
 @app.get("/", response_class=HTMLResponse)
 def dashboard(request: Request):
+
     db: Session = SessionLocal()
+
     try:
         packets = (
             db.query(MinePacket)
@@ -132,13 +137,12 @@ def dashboard(request: Request):
         total = db.query(MinePacket).count()
         emergencies = db.query(MinePacket).filter(MinePacket.emergency == True).count()
 
-        avg_risk = db.query(MinePacket).with_entities(
-            (MinePacket.risk_score)
-        ).all()
+        avg_risk_records = db.query(MinePacket.risk_score).all()
 
-        avg_risk_value = round(
-            sum([r[0] for r in avg_risk]) / len(avg_risk), 2
-        ) if avg_risk else 0
+        avg_risk_value = (
+            round(sum([r[0] for r in avg_risk_records]) / len(avg_risk_records), 2)
+            if avg_risk_records else 0
+        )
 
         return templates.TemplateResponse(
             "dashboard.html",
@@ -154,21 +158,26 @@ def dashboard(request: Request):
     finally:
         db.close()
 
+
 # -----------------------------
 # API ENDPOINTS
 # -----------------------------
-
 @app.get("/packets")
 def get_packets():
+
     db: Session = SessionLocal()
+
     try:
         return db.query(MinePacket).all()
     finally:
         db.close()
 
+
 @app.get("/stats")
 def stats():
+
     db: Session = SessionLocal()
+
     try:
         total = db.query(MinePacket).count()
         emergencies = db.query(MinePacket).filter(MinePacket.emergency == True).count()
@@ -177,12 +186,16 @@ def stats():
             "total_packets": total,
             "emergency_count": emergencies
         }
+
     finally:
         db.close()
 
+
 @app.get("/analytics")
 def analytics():
+
     db: Session = SessionLocal()
+
     try:
         packets = db.query(MinePacket).order_by(MinePacket.id.asc()).all()
 
@@ -202,3 +215,4 @@ def analytics():
 
     finally:
         db.close()
+```

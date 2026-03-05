@@ -93,6 +93,7 @@ def receive_packet(packet: Packet):
             ai_prediction=explanation,
             emergency=auto_emergency,
             risk_score=risk_score,
+            source=packet.source,
             timestamp=datetime.datetime.utcnow()
         )
 

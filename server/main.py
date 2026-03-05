@@ -5,8 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from database import engine, SessionLocal
-from models import Base, MinePacket
+from server.database import engine, SessionLocal
+from server.models import Base, MinePacket
 import requests
 import datetime
 

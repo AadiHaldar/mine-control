@@ -36,6 +36,7 @@ class Packet(BaseModel):
     vibration: float
     ai_prediction: str
     emergency: bool
+    source: str
 
 
 # -----------------------------

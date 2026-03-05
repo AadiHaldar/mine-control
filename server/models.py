@@ -14,5 +14,6 @@ class MinePacket(Base):
     vibration = Column(Float)
     ai_prediction = Column(String)
     emergency = Column(Boolean)
-    risk_score = Column(Float)   # 🔥 ADD THIS LINE
+    risk_score = Column(Float) 
+    source = Column(String)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)

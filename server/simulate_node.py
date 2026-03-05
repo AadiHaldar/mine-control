@@ -3,7 +3,7 @@ import requests
 import random
 import time
 
-SERVER_URL = "http://127.0.0.1:8000/mine_packet"
+SERVER_URL = "https://mine-control.onrender.com/mine_packet"
 
 while True:
     data = {

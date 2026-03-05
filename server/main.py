@@ -215,4 +215,4 @@ def analytics():
 
     finally:
         db.close()
-```
+
